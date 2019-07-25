@@ -6,7 +6,6 @@ use gipfl\IcingaWeb2\Icon;
 use gipfl\IcingaWeb2\Link;
 use gipfl\IcingaWeb2\Table\Extension\MultiSelect;
 use gipfl\Translation\TranslationHelper;
-use Icinga\Date\DateFormatter;
 use Icinga\Module\Eventtracker\Priority;
 use Icinga\Module\Eventtracker\Time;
 use Icinga\Module\Eventtracker\Uuid;
@@ -46,8 +45,8 @@ class EventsTable extends BaseTable
     protected function initialize()
     {
         $this->enableMultiSelect(
-            'eventtracker/event',
-            'eventtracker/event',
+            'eventtracker/issue',
+            'eventtracker/issue',
             ['uuid']
         );
         $prioIconRenderer = function ($row) {
@@ -82,7 +81,7 @@ class EventsTable extends BaseTable
                 if ($row->status !== 'open') {
                     $classes[] = 'ack';
                 }
-                $link = Link::create(substr(strtoupper($row->severity), 0, 4), 'eventtracker/event', [
+                $link = Link::create(substr(strtoupper($row->severity), 0, 4), 'eventtracker/issue', [
                     'uuid' => Uuid::toHex($row->issue_uuid)
                 ], [
                     'title' => ucfirst($row->severity)
@@ -164,7 +163,7 @@ class EventsTable extends BaseTable
 
     protected function linkToObject($row, $label)
     {
-        return Link::create($label, 'eventtracker/event', [
+        return Link::create($label, 'eventtracker/issue', [
             'uuid' => Uuid::toHex($row->issue_uuid)
         ], [
             'title' => ucfirst($row->severity)

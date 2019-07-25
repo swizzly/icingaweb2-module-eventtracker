@@ -7,7 +7,7 @@ use gipfl\IcingaWeb2\Table\Extension\MultiSelect;
 use gipfl\IcingaWeb2\Url;
 use gipfl\Translation\TranslationHelper;
 use Icinga\Module\Eventtracker\Db\EventSummaryBySeverity;
-use Icinga\Module\Eventtracker\Web\Widget\SummaryFilter;
+use Icinga\Module\Eventtracker\Web\Widget\SeverityFilter;
 
 abstract class BaseSummaryTable extends BaseTable
 {
@@ -30,8 +30,8 @@ abstract class BaseSummaryTable extends BaseTable
     {
         $column = $this->getMainColumn();
         $this->enableMultiSelect(
-            'eventtracker/events',
-            'eventtracker/events',
+            'eventtracker/issues',
+            'eventtracker/issues',
             [$column]
         );
         $this->addAvailableColumns([
@@ -42,8 +42,8 @@ abstract class BaseSummaryTable extends BaseTable
             $this->createColumn('cnt', ' ', [
                 'cnt' => 'COUNT(*)',
             ])->setRenderer(function ($row) {
-                $url = Url::fromPath('eventtracker/events');
-                $summary = new SummaryFilter($row, $url);
+                $url = Url::fromPath('eventtracker/issues');
+                $summary = new SeverityFilter($row, $url);
 
                 return $this::td($summary->skipMissing(), [
                     'align' => 'right'
@@ -58,7 +58,7 @@ abstract class BaseSummaryTable extends BaseTable
         if (\strlen($label) === 0) {
             $label = $this->translate('- none -');
         }
-        return Link::create($label, 'eventtracker/events', [
+        return Link::create($label, 'eventtracker/issues', [
             $column => $row->$column
         ]);
     }
